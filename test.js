@@ -12,3 +12,5 @@ salamBegu();
 function hadafam(){
   console.log("هدف من تا فروردین ۱۴۰۵: اولین پروژه ۱۰۰ میلیونی");
 }
+hadafam();
+hadafam();
