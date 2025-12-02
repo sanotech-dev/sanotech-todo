@@ -1,6 +1,6 @@
 
 let name ="امیر هوشنگ";
-const age = "41";
+const age = 41 ;
 
 function salamBegu(){
   console.log("سلام"+ name +"جان!");
