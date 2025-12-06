@@ -1,23 +1,27 @@
-// ۱. یه آرایه می‌سازیم که همه تسک‌ها رو نگه داره
-let todos = [];
+// Sanotech Todo App - درس ۵: ذخیره کامل با localStorage
+const input = document.getElementById("todoInput");
+const button = document.getElementById("addBtn");
+const list = document.getElementById("todoList");
 
-// ۲. وقتی صفحه لود شد، از localStorage بخونیم
+let todos = []; // آرایه اصلی تسک‌ها
+
+// ۱. وقتی صفحه لود شد، تسک‌ها رو از حافظه بخون
 function loadTodos() {
   const saved = localStorage.getItem("sanotech-todos");
   if (saved) {
-    todos = JSON.parse(saved);  // از متن به آرایه تبدیل می‌کنه
+    todos = JSON.parse(saved);
   }
-  renderTodos(); // همه تسک‌ها رو نشون بده
+  renderTodos();
 }
 
-// ۳. تابع ذخیره کردن
+// ۲. تابع ذخیره در حافظه
 function saveTodos() {
   localStorage.setItem("sanotech-todos", JSON.stringify(todos));
 }
 
-// ۴. تابع نمایش تسک‌ها (render)
+// ۳. نمایش همه تسک‌ها
 function renderTodos() {
-  list.innerHTML = ""; // اول لیست رو پاک کن
+  list.innerHTML = ""; // لیست رو پاک کن
   todos.forEach((todo, index) => {
     const li = document.createElement("li");
     li.className = "flex items-center justify-between p-4 bg-indigo-50 rounded-xl mb-3";
@@ -38,14 +42,14 @@ function renderTodos() {
     checkbox.addEventListener("change", () => {
       todo.completed = checkbox.checked;
       saveTodos();
-      renderTodos(); // دوباره بساز که خط بیاد
+      renderTodos();
     });
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "حذف";
     deleteBtn.className = "bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition";
     deleteBtn.addEventListener("click", () => {
-      todos.splice(index, 1); // از آرایه حذف کن
+      todos.splice(index, 1);
       saveTodos();
       renderTodos();
     });
@@ -57,7 +61,7 @@ function renderTodos() {
   });
 }
 
-// ۵. تابع اضافه کردن تسک (به‌روز شده)
+// ۴. اضافه کردن تسک جدید
 function addNewTask() {
   const text = input.value.trim();
   if (!text) return alert("لطفاً یه چیزی بنویس!");
@@ -72,9 +76,9 @@ function addNewTask() {
   renderTodos();
 }
 
-// ۶. رویدادها
+// رویدادها
 button.addEventListener("click", addNewTask);
 input.addEventListener("keypress", e => e.key === "Enter" && addNewTask());
 
-// ۷. وقتی صفحه لود شد، تسک‌ها رو نشون بده
+// شروع برنامه
 loadTodos();
