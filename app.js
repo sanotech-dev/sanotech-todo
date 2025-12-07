@@ -23,7 +23,12 @@ function renderTodos() {
   list.innerHTML = ""; // لیست رو پاک کن
   todos.forEach((todo, index) => {
     const li = document.createElement("li");
-    li.className = "flex items-center justify-between p-4 bg-indigo-50 rounded-xl mb-3";
+    li.className = "flex items-center justify-between p-4 bg-indigo-50 rounded-xl mb-3 cursor-move select-none";
+    li.draggable = true ;
+    li.addEventListener("dragstart", handleDragStart);
+    li.addEventListener("dragover", handleDragOver);
+    li.addEventListener("drop", handleDrop);
+    li.addEventListener("dragend", handleDragEnd);
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -84,6 +89,35 @@ function renderTodos() {
   });
 }
 
+let draggedItem = null;
+function handleDragStart(e){
+  draggedItem = this ;
+  setTimeout(() => this.style.opacity = "0.5", 0);
+}
+
+function handleDragOver(e){
+  e.preventDefault();
+}
+function handleDrop(e) {
+  e.preventDefault();
+  if (draggedItem !== this) {
+    let allItems = [...list.querySelectorAll("li")];
+    let draggedIndex = allItems.indexOf(draggedItem);
+    let targetIndex = allItems.indexOf(this);
+
+    let temp = todos[draggedIndex];
+    todos[draggedIndex] = todos[targetIndex];
+    todos[targetIndex] = temp;
+
+    saveTodos();
+    renderTodos();
+  }
+}
+
+function handleDragEnd() {
+  this.style.opacity = "1";
+  draggedItem = null;
+}
 // ۴. اضافه کردن تسک جدید
 function addNewTask() {
   const text = input.value.trim();
