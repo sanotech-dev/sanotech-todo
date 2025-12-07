@@ -1,4 +1,3 @@
-// Sanotech Todo App - درس ۵: ذخیره کامل با localStorage
 const input = document.getElementById("todoInput");
 const button = document.getElementById("addBtn");
 const list = document.getElementById("todoList");
@@ -33,12 +32,36 @@ function renderTodos() {
 
     const span = document.createElement("span");
     span.textContent = todo.text;
-    span.className = "text-lg flex-1";
+    span.className = "text-lg flex-1 cursor-pointer";
     if (todo.completed) {
       span.style.textDecoration = "line-through";
       span.style.opacity = "0.6";
     }
 
+    span.addEventListener("dblclick", function(){
+      const inputEdit = document.createElement("input");
+      inputEdit.type = "text";
+      inputEdit.value = todo.text;
+      inputEdit.className = "text-lg flex-1 px-2 py-1 border-2 border-indigo-500 rounded";
+
+      inputEdit.addEventListener("blur", saveEdit);
+      inputEdit.addEventListener("keypress", function(e){
+        if (e.key === "Enter") {
+          saveEdit();
+        }
+      });
+      function saveEdit() {
+        const newText = inputEdit.value.trim();
+        if (newText) {
+          todo.text = newText;
+          saveTodos();
+          renderTodos();
+        }
+      }
+      span.replaceWith(inputEdit);
+      inputEdit.focus();
+      inputEdit.select();
+    });
     checkbox.addEventListener("change", () => {
       todo.completed = checkbox.checked;
       saveTodos();
