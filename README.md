@@ -1,15 +1,22 @@
-# Sanotech Todo App
+# ✅ Sanotech Todo App - Production Ready
 
-اولین پروژه واقعی من در مسیر تبدیل شدن به فول‌استک پول‌ساز
-هدف: فروردین ۱۴۰۵ اولین پروژه ۱۰۰ میلیونی
+My first real project on the journey to becoming a Full-Stack Developer.
 
-ویژگی‌های نهایی:
+**Live Demo:**
+[sanotech-todo.vercel.app](https://sanotech-todo.vercel.app)
 
-- اضافه/حذف/ویرایش تسک
-- تیک زدن و خط کشیدن
-- Drag & Drop
-- دسته‌بندی
-- ذخیره دائمی در localStorage
-- طراحی کاملاً ریسپانسیو
+**Source Code:**
+[GitHub Repository](https://github.com/sanotech-dev/sanotech-todo)
 
-© Sanotech 2025 - در حال ساخت با کمک استاد واقعی
+## Features
+- Full CRUD operations
+- Drag & Drop sorting
+- Categories & filtering
+- Persistent storage (localStorage)
+- Fully responsive + Dark Mode
+
+## Tech Stack
+Vanilla JavaScript • HTML5 • CSS3 • LocalStorage API
+
+---
+*Learning in public • Shipping daily • Open to freelance projects*
