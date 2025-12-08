@@ -4,6 +4,8 @@ const list = document.getElementById('todoList');
 
 let todos = []; // آرایه اصلی تسک‌ها
 
+let currentFilter = 'all';
+
 // ۱. وقتی صفحه لود شد، تسک‌ها رو از حافظه بخون
 function loadTodos() {
   const saved = localStorage.getItem('sanotech-todos');
@@ -18,20 +20,25 @@ function saveTodos() {
   localStorage.setItem('sanotech-todos', JSON.stringify(todos));
 }
 
-
-
 const categoryColors = {
-  work: "border-l-8 border-l-blue-600",
-  personal: "border-l-8 border-l-green-600",
-  shopping: "border-l-8 border-l-purple-600"
+  work: 'border-l-8 border-l-blue-600',
+  personal: 'border-l-8 border-l-green-600',
+  shopping: 'border-l-8 border-l-purple-600',
 };
 
 // ۳. نمایش همه تسک‌ها
 function renderTodos() {
   list.innerHTML = '';
-  todos.forEach((todo, index) => {
+  const filteredTodos = todos.filter((todo) => {
+    if (currentFilter === 'active') return !todo.completed;
+    if (currentFilter === 'completed') return todo.completed;
+    return true;
+  });
+  filteredTodos.forEach((todo, filteredIndex) => {
     const li = document.createElement('li');
-    li.className = `flex items-center justify-between p-4 bg-white rounded-xl mb-3 ${categoryColors[todo.category]} shadow-sm cursor-move select-none`;
+    li.className = `flex items-center justify-between p-4 bg-white rounded-xl mb-3 ${
+      categoryColors[todo.category]
+    } shadow-sm cursor-move select-none`;
     li.draggable = true;
     li.addEventListener('dragstart', handleDragStart);
     li.addEventListener('dragover', handleDragOver);
@@ -85,7 +92,8 @@ function renderTodos() {
     deleteBtn.textContent = 'حذف';
     deleteBtn.className = 'bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition';
     deleteBtn.addEventListener('click', () => {
-      todos.splice(index, 1);
+      const realIndex = todos.indexOf(todo);
+      todos.splice(realIndex, 1);
       saveTodos();
       renderTodos();
     });
@@ -95,7 +103,7 @@ function renderTodos() {
     li.appendChild(deleteBtn);
     list.appendChild(li);
   });
-  document.getElementById("counter").textContent = todos.filter(t => !t.completed).length;
+  document.getElementById('counter').textContent = todos.filter((t) => !t.completed).length;
 }
 
 let draggedItem = null;
@@ -130,22 +138,35 @@ function handleDragEnd() {
 // ۴. اضافه کردن تسک جدید
 function addNewTask() {
   const text = input.value.trim();
-   if (!text) return alert("لطفاً یه چیزی بنویس!");
-  const category = prompt("دسته‌بندی؟ (work / personal / shopping)", "work") || "work";
+  if (!text) return alert('لطفاً یه چیزی بنویس!');
+  const category = prompt('دسته‌بندی؟ (work / personal / shopping)', 'work') || 'work';
 
   todos.push({
     text: text,
     completed: false,
-    category: category
+    category: category,
   });
 
-  input.value = "";
+  input.value = '';
   saveTodos();
   renderTodos();
 }
 // رویدادها
 button.addEventListener('click', addNewTask);
 input.addEventListener('keypress', (e) => e.key === 'Enter' && addNewTask());
+
+document.getElementById('filter-all').addEventListener('click', () => {
+  currentFilter = 'all';
+  renderTodos();
+});
+document.getElementById('filter-active').addEventListener('click', () => {
+  currentFilter = 'active';
+  renderTodos();
+});
+document.getElementById('filter-completed').addEventListener('click', () => {
+  currentFilter = 'completed';
+  renderTodos();
+});
 
 // شروع برنامه
 loadTodos();
